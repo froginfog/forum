@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<!--post-->
+	<div class="row">
+  	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<div class="pull-left">
+      {% if islogin == 1 %}
+        <a href="/post/{{ post.post_parent_id }}"><button class="btn btn-danger">发表主题</button></a>
+        <a href="/reply/{{ post.id }}"><button class="btn btn-danger">回复主题</button></a>
+      {% else %}
+        <button class="btn btn-danger" data-toggle="modal" data-target="#login">发表主题</button>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#login">回复主题</button>
+      {% endif %}
+      </div>
+      <div class="pull-right">
+        <a href="/list/{{ post.post_parent_id }}"><h4><strong>返回列表</strong></h4></a>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix" style="margin:10px 0 0 0 "></div>
+  <div class="row">  
+  	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<div class="panel panel-primary" style="border-color:#222">
+      	<div class="panel-heading" style="background-color:#222; "><div class="panel-title">主题：{{ post.post_title }} <p class="pull-right">0#</p></div></div>
+        <div class="panel-body">
+        
+        	<div class="media">
+          	<div class="pull-left"><img class="media-object" src="/media/{{ pu.userhead }}" width="130" height="130"><p class="text-center">{{ post.post_user }}</p></div>
+            <div class="media-body">
+          		<h4 class="media-heading">{{ post.post_title }}</h4>
+            	<p>{{ post.post_content|safe }}</p>
+              {% if post.post_attach %}
+              <p>附件：<a href="/media/{{ post.post_attach }}">{{ post.post_title }}</a></p>
+              {% endif %}
+          	</div>
+          </div>
+          
+        </div>
+        <div class="panel-footer text-right">{{ post.post_date }}</div>
+      </div>
+    </div>
+  </div>
+<!--post end-->
+
+<!--rep-->
+{% load mytag %}
+{% for r in reply %}
+	<div class="row">
+  	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<div class="panel panel-default">
+      	<div class="panel-heading"><div class="panel-title">{{ r.reply_title }} <p class="pull-right">{% floor forloop.counter pagesize thispage %}#</p></div></div>
+      	<div class="panel-body">
+        	<div class="media">
+          	<div class="pull-left"><img class="media-object" src="/media/{% for u in ru %}{% if u.user == r.reply_user %}{{ u.userhead }}{% endif %}{% endfor %}" width="130" height="130"><p class="text-center">{{ r.reply_user }}</p></div>
+            <div class="media-body">
+            	<p>{{ r.reply_content|safe }}</p>
+              {% if r.reply_attach %}
+              <p>附件：<a href="/media/{{ r.reply_attach }}">{{ r.reply_title }}</a></p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer text-right">{{ r.reply_date }}</div>
+      </div>
+    </div>
+  </div> 
+{% endfor %}
+
+<!--rep end-->  
+	<div class="row">
+  	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<ul class="pagination">
+      {% for p in pg.page_range %}
+      	<li><a href="?page={{ p }}">{{ p }}</a></li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+<!--login modal-->  
+{% include 'login.html' %}
+<!--login modal end-->
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block main %}
+	<div class="row">
+  	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<div class="pull-left"><h4><strong>以下主题中含有搜索的关键字：</strong></h4></div>
+    </div>
+  </div>
+  <div class="row">
+  	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead style="background-color:#222; color:#FFF">
+            <tr>
+              <td class="col-md-7 col-sm-7 col-xs-7">主题</td>
+              <td class="col-md-2 col-sm-2 col-xs-2">作者</td>
+              <td class="col-md-1 col-sm-1 col-xs-1">阅读/回复</td>
+              <td class="col-md-2 col-sm-2 col-xs-2">时间</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% for p in result %}
+            <tr {% if p.post_istop == True %}class="danger"{% endif %}>
+              <td><a href="/show/{{ p.id }}">{{ p.post_title }}</a></td>
+              <td>{{ p.post_user }}</td>
+              <td>{{ p.post_clicks }}/{{ p.num_rep }}</td>
+              <td>{{ p.post_date }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <ul class="pagination">
+        {% for p in pg.page_range %}
+  				<li><a href="?page={{ p }}&search={{ search }}">{{ p }}</a></li>
+        {% endfor %}
+				</ul>
+    	</div>    
+    </div>
+  </div>
+  
+<!--login modal-->  
+{% include 'login.html' %}
+<!--login modal end-->
+{% endblock %}

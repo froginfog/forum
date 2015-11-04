@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<!--post form-->
+	<div class="row">
+  	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<!--<a data-toggle="modal" data-target="#login">-->
+    	<form enctype="multipart/form-data" class="form-horizontal" name="post_form" method="post" action="">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.media }}
+      	<div class="form-group">
+        	<label class="control-label col-md-1 col-sm-3 col-xs-3">标题</label>
+          <div class="col-md-8 col-sm-8 col-xs-8">
+          	{{ pform.post_title }}
+            {{ pform.post_title.errors }}
+          </div>
+        </div>
+        <div class="form-group">
+        	<label class="control-label col-md-1 col-sm-3 col-xs-3">内容</label>
+          <div class="col-md-8 col-sm-8 col-xs-8">
+            {{ pform.post_content }}
+            {{ pform.post_content.errors }}
+          </div>
+        </div>
+        <div class="form-group">
+        	<label class="control-label col-md-1 col-sm-3 col-xs-3">附件</label>
+        	<div class="col-md-4 col-sm-4 col-xs-4">
+          	{{ pform.post_attach }}
+            {{ pform.post_attach.errors }}
+        	</div>  
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-1 col-sm-3 col-xs-3">验证码</label>
+          <div class="col-md-3 col-sm-3 col-xs-3">
+             {{ login_forms.vcode }}
+            {{ login_forms.vcode.errors }}
+             <div class="help-block"><img src="/static/images/vcode.jpg"></div>
+          </div>
+        </div>
+        <div class="form-group">
+        	<div class="col-md-offset-1 col-sm-offset-2 col-xs-offset-2">
+          	<button type="submit" class="btn btn-danger">确定</button>
+          	<button type="reset" class="btn btn-danger">重填</button>
+        	</div>
+        </div>
+      </form>
+      <!--</a>-->
+    </div>
+  </div>
+<!--post form end-->
+  
+<!--login modal-->  
+{% include 'login.html' %}
+<!--login modal end-->
+{% endblock %}

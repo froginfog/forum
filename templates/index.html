@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block main %}
+  {% for b1 in board1st %}
+  <div class="row">
+  	<div class="col-md-12 col-sm-12 col-xs-12">
+    	<div class="panel panel-primary" style="border-color:#222">
+
+      	<div class="panel-heading" style="background-color:#222; "><div class="panel-title">{{ b1.board_name }}</div></div>
+      	<div class="panel-body">
+        	<div class="table-responsive">
+      		<table class="table table-striped">
+          	<thead>
+            	<tr>
+              	<th class="col-md-6 col-sm-6 col-xs-6">版块信息</th>
+                <th class="col-md-1 col-sm-1 col-xs-1">主题数</th>
+                <th class="col-md-4 col-sm-4 col-xs-4">最后发表</th>
+                <th class="col-md-1 col-sm-1 col-xs-1">版主</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for b2 in board2nd %}
+                {% if b2.board_parent_id == b1.id %}
+            	<tr>
+              	<td><a href="/list/{{ b2.id }}">{{ b2.board_name }}</a><h5><small>{{ b2.board_info|safe }}</small></h5></td>
+                <td>{{ b2.num_post }}</td>
+                <td>
+                {% for p in last_post %}
+                {% if p.post_parent == b2 %}
+                  <a href="/show/{{ p.id }}">{{ p.post_title|truncatechars:25 }}</a><h5><small>BY:{{ p.post_user }}  {{ p.post_date }}</small></h5>
+                {% endif %}
+                {% endfor %}
+                </td>
+                <td>
+                  {% for m in b2.board_manager.all %}
+                  {{ m.username|add:'|' }}
+                  {% endfor %}
+                </td>
+              </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+          </div>
+      	</div>
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% if islogin == 0 %}
+  <!--login-->
+  {% include 'login.html' %}
+  <!--login end-->
+  {% endif %}
+{% endblock %}
